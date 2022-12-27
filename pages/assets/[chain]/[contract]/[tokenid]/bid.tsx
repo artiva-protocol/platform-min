@@ -22,9 +22,11 @@ import CustomConnectButton from "@/components/CustomConnectButton";
 
 const Bid = () => {
   const router = useRouter();
-  const { chain, contract, tokenid } = router.query;
+  const { chain, tokenid } = router.query;
   const { address } = useAccount();
   const { data: signer } = useSigner();
+
+  const contract = process.env.NEXT_PUBLIC_PLATFORM_CONTRACT;
 
   const [bidAmount, setBidAmount] = useState("");
   const [loading, setLoading] = useState(false);

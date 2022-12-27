@@ -20,12 +20,13 @@ import CustomConnectButton from "@/components/CustomConnectButton";
 
 const Mint = () => {
   const router = useRouter();
-  const { chain, contract } = router.query;
+  const { chain } = router.query;
   const { data: signer } = useSigner();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const contract = process.env.NEXT_PUBLIC_PLATFORM_CONTRACT;
 
   const { data: nftContract } = useNFTContractSecondary({
     chain: chain as ChainIdentifier,

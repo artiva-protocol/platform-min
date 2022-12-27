@@ -24,10 +24,11 @@ import WalletWrapper from "@/components/WalletWrapper";
 
 const Buy = () => {
   const router = useRouter();
-  const { chain, contract, tokenid, platform } = router.query;
+  const { chain, tokenid, platform } = router.query;
   const { address } = useAccount();
   const { data: signer } = useSigner();
   const { data: platformData } = useMetadata({ platform: platform as string });
+  const contract = process.env.NEXT_PUBLIC_PLATFORM_CONTRACT;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

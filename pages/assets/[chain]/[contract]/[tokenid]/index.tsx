@@ -1,49 +1,28 @@
 import { useRouter } from "next/router";
-import { ChainIdentifier, useNFT, ArtivaContext } from "@artiva/shared";
+import {
+  ChainIdentifier,
+  useNFT,
+  ArtivaContext,
+  useMetadata,
+} from "@artiva/shared";
 import { NFTProps } from "@artiva/shared";
 import { NFTObject } from "@zoralabs/nft-hooks";
 import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 import Layout from "@/components/Layout";
 import useThemeURL from "@/hooks/theme/useThemeURL";
 
-export const getServerSideProps = async ({
-  res,
-  query,
-}: GetServerSidePropsContext) => {
-  const { platform: platformContract } = query;
-  const platform = await getPlatformMetadataByPlatform(
-    platformContract as string
-  );
-
-  if (!platform)
-    return {
-      notFound: true,
-    };
-
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-
-  return {
-    props: {
-      platform,
-    },
-  };
-};
-
-const NFT = ({
-  platform,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const NFT = () => {
   const {
-    query: { platform: platformId, chain, contract, tokenid },
+    query: { chain, contract, tokenid },
   } = useRouter();
   const ctx = useContext(ArtivaContext);
-  const themeURL = useThemeURL({ theme: platform.themeURL });
+
+  const platformId = process.env.NEXT_PUBLIC_PLATFORM_CONTRACT;
+  const { data: platform } = useMetadata({ platform: platformId });
+
+  const themeURL = useThemeURL({ theme: platform?.themeURL });
 
   const { data } = useNFT({
     chain: chain as ChainIdentifier,
@@ -56,13 +35,14 @@ const NFT = ({
     themeURL,
   });
 
+  if (!NFTComponentDynamic || !platform) return <Fragment />;
+
   const props: NFTProps = {
     nft: data as NFTObject,
     ctx,
     platform: { ...platform, id: platformId as string },
   };
 
-  if (!NFTComponentDynamic) return <Fragment />;
   return (
     <Layout platform={platform}>
       <NFTComponentDynamic {...props} />

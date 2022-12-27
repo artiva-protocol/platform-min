@@ -12,7 +12,9 @@ import Image from "next/image";
 
 const AdminNavigation = () => {
   const router = useRouter();
-  const { data } = useMetadata({ platform: router.query.platform as string });
+  const { data } = useMetadata({
+    platform: process.env.NEXT_PUBLIC_PLATFORM_CONTRACT as string,
+  });
 
   const getStyle = (key: string) => {
     return router.pathname.includes(key)
@@ -34,39 +36,31 @@ const AdminNavigation = () => {
       </div>
       <div className="mt-10">
         <Link href={"/artiva/site"} className="flex items-center mt-4">
-
           <HomeIcon className="mr-4 w-5 text-gray-400" />
           <div className={`text-sm text-gray-600 ${getStyle("site")}`}>
             View Site
           </div>
-
         </Link>
 
         <Link href={"/artiva/collection"} className="flex items-center mt-4">
-
           <RectangleStackIcon className="mr-4 w-5 text-gray-400" />
           <div className={`text-sm text-gray-600 ${getStyle("collection")}`}>
             Collection
           </div>
-
         </Link>
 
         <Link href={"/artiva/settings"} className="flex items-center mt-4">
-
           <CogIcon className="mr-4 w-5 text-gray-400" />
           <div className={`text-sm text-gray-600 ${getStyle("settings")}`}>
             Settings
           </div>
-
         </Link>
 
         <Link href={"/artiva/staff"} className="flex items-center mt-4">
-
           <CheckBadgeIcon className="mr-4 w-5 text-gray-400" />
           <div className={`text-sm text-gray-600 ${getStyle("staff")}`}>
             Staff
           </div>
-
         </Link>
       </div>
       <div className="absolute bottom-4 left-6">

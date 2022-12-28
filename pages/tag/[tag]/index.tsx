@@ -1,9 +1,8 @@
 import Layout from "@/components/Layout";
-import { ArtivaContext, Platform, TagProps, useMetadata } from "@artiva/shared";
+import { ArtivaContext, TagProps, useMetadata } from "@artiva/shared";
 import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import useThemeURL from "@/hooks/theme/useThemeURL";
 
